@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class GUI extends JFrame {
 
-    private Timer timer5,timer52;
+    private Timer timer5,timer52,timer7;
     private ModelGame modelGame;
     private Header headerProject;
     private PanelFrase panelFrase;
@@ -57,12 +57,18 @@ public class GUI extends JFrame {
         panelFrase.setVisible(true);
         add(panelFrase,BorderLayout.NORTH);
         this.addKeyListener(escucha);
-        setFocusable(false);
+        setFocusable(true);
 
         panelConteo = new PanelConteo();
         panelConteo.setVisible(false);
         add(panelConteo,BorderLayout.EAST);
-        this.addKeyListener(escucha);
+        //this.addKeyListener(escucha);
+        setFocusable(true);
+
+        panelResolver = new PanelResolver();
+        panelResolver.setVisible(false);
+        add(panelResolver,BorderLayout.WEST);
+        //this.addKeyListener(escucha);
         setFocusable(true);
 
         reset = new JButton("Reset");
@@ -70,7 +76,8 @@ public class GUI extends JFrame {
         this.add(reset, BorderLayout.SOUTH);
 
         timer5 = new Timer(200,escucha);
-        timer52 = new Timer(1000, escucha);
+        timer52 = new Timer(20, escucha);
+        timer7 = new Timer(20,escucha);
 
     }
 
@@ -90,22 +97,23 @@ public class GUI extends JFrame {
      */
     private class Escucha implements ActionListener, KeyListener {
 
+        int palabraActual;
         private int counter;
 
         @Override
         public void keyTyped(KeyEvent e) {
             if(e.getKeyChar()=='r'){
-                modelGame.limpiarArrays();
-                JOptionPane.showMessageDialog(null, "junior tu apa");
                 panelFrase.setVisible(true);
-            }else if(e.getKeyChar()=='o'){
+            }if(e.getKeyChar()=='o'){
                 //super.keyTyped(e);
                 modelGame.memorizar();
-                JOptionPane.showMessageDialog(null,"si");
                 ArrayList<String> palabrasm = modelGame.mostrarPalabras();
-            }else if(e.getKeyChar()=='z'){
+                System.out.println(palabrasm.size());
+                panelConteo.addKeyListener(escucha);
+                panelResolver.addKeyListener(escucha);
+            }if(e.getKeyChar()=='z'){
                 System.exit(0);
-            }else if(e.getKeyChar()=='t'){
+            }if(e.getKeyChar()=='t'){
                 timer5.start();
             }
         }
@@ -122,6 +130,7 @@ public class GUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
             if(e.getSource()==reset){
                 JOptionPane.showMessageDialog(null, "popo");
             }else if(e.getSource()==timer5){
@@ -143,7 +152,29 @@ public class GUI extends JFrame {
                     panelConteo.pintarPalabra(""+counter);
                 }else{
                     timer52.stop();
-                    counter = 0;
+                    counter = 7;
+                    timer7.start();
+                    panelConteo.setVisible(false);
+                    panelResolver.setVisible(true);
+                    modelGame.recordar();
+                    ArrayList<String> palabrasD = modelGame.getPalabrasTotalNivel();
+                    ArrayList<String> palabrasF = modelGame.mostrarPalabras();
+                    JOptionPane.showMessageDialog(null,""+palabrasD.size()+palabrasF.size());
+                }
+            }else if(e.getSource()==timer7) {
+                counter--;
+                ArrayList<String> palabrasD = modelGame.getPalabrasTotalNivel();
+                System.out.println(palabrasD.size());
+                if (counter <= 7) {
+                    panelResolver.pintarPalabra(palabrasD.get(palabraActual), "" + counter);
+                    System.out.println("counter: " + counter + "\n" + "palabra actual: " + palabraActual);
+                }if (counter==0){
+                    counter = 7;
+                    palabraActual++;
+                    System.out.println("counter: " + counter + "\n" + "palabra actual: " + palabraActual);
+                }if(palabraActual>19){
+                    timer7.stop();
+                    counter = 7;
                 }
             }
         }
