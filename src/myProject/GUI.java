@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -13,11 +15,12 @@ import java.util.Random;
  */
 public class GUI extends JFrame {
 
+    private Diccionario diccionario;
     private ModelGame modelGame;
     private Header headerProject;
     private JPanel squareColor;
-    private JTextArea ola;
-    private JButton initTimer;
+    private JTextArea ola,mezclado;
+    private JButton initTimer,acordate,reset;
     private Timer timer;
     private Escucha escucha;
 
@@ -44,6 +47,7 @@ public class GUI extends JFrame {
     private void initGUI() {
 
         modelGame = new ModelGame();
+        diccionario = new Diccionario();
         //Set up JFrame Container's Layout
         //Create Listener Object and Control Object
         escucha = new Escucha();
@@ -69,6 +73,22 @@ public class GUI extends JFrame {
         ola = new JTextArea(1, 7);
         ola.setText("0");
         add(ola,BorderLayout.EAST);
+
+        mezclado = new JTextArea(1, 7);
+        mezclado.setText("0");
+        add(mezclado,BorderLayout.WEST);
+
+        acordate = new JButton("acordate");
+        acordate.addActionListener(escucha);
+        //initTimer.setVisible(false);
+        acordate.setEnabled(true);
+        add(acordate,BorderLayout.NORTH);
+
+        reset = new JButton("Reset");
+        reset.addActionListener(escucha);
+        //initTimer.setVisible(false);
+        reset.setEnabled(true);
+        add(reset,BorderLayout.WEST);
     }
 
     /**
@@ -98,10 +118,22 @@ public class GUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if(e.getSource()==initTimer){
                 modelGame.memorizar();
-                ola.setText(modelGame.mostrarPalabras()[0]+"\n"+modelGame.mostrarPalabras()[1]+"\n"+modelGame.mostrarPalabras()[2]
-                        +"\n"+modelGame.mostrarPalabras()[3]+"\n"+modelGame.mostrarPalabras()[4]+"\n"+modelGame.mostrarPalabras()[5]
-                        +"\n"+modelGame.mostrarPalabras()[6]+"\n"+modelGame.mostrarPalabras()[7]+"\n"+modelGame.mostrarPalabras()[8]
-                        +"\n"+modelGame.mostrarPalabras()[9]);
+                ArrayList<String> palabrasD = modelGame.getDiccionario();
+                ArrayList<String> palabrasm = modelGame.mostrarPalabras();
+                ola.setText(palabrasm.get(0)+"\n"+palabrasm.get(1)+"\n"+palabrasm.get(2)+"\n"+palabrasm.get(3)+"\n"+palabrasm.get(4)
+                        +"\n"+palabrasm.get(5)+"\n"+palabrasm.get(6)+"\n"+palabrasm.get(7)+"\n"+palabrasm.get(8)+"\n"+palabrasm.get(9)
+                        +"\n"+palabrasm.size() +"\n"+palabrasD.size());
+            }else if(e.getSource()==acordate){
+                modelGame.recordar();
+                ArrayList<String> palabrase = modelGame.getPalabrasTotalNivel();
+                Collections.shuffle(palabrase);
+                ola.setText(palabrase.get(0)+"\n"+palabrase.get(1)+"\n"+palabrase.get(2)+"\n"+palabrase.get(3)+"\n"+palabrase.get(4)
+                        +"\n"+palabrase.get(5)+"\n"+palabrase.get(6)+"\n"+palabrase.get(7)+"\n"+palabrase.get(8)
+                        +"\n"+ palabrase.get(9)+"\n"+palabrase.get(10)+"\n"+palabrase.get(11)+"\n"+palabrase.get(12)+"\n"+palabrase.get(13)
+                        +"\n"+palabrase.get(14) +"\n"+palabrase.get(15)+"\n"+palabrase.get(16)+"\n"+palabrase.get(17)+"\n"+palabrase.get(18)
+                        +"\n"+palabrase.get(19)+"\n"+palabrase.size());
+                modelGame.limpiarArrays();
+            }else if(e.getSource()==reset){
             }
         }
     }

@@ -15,4 +15,8 @@ public class Diccionario {
         Random aleatorio = new Random();
         return diccionario.get(aleatorio.nextInt(diccionario.size()));
     }
+
+    public ArrayList<String> getDiccionario() {
+        return diccionario;
+    }
 }
