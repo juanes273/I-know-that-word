@@ -3,13 +3,13 @@ package myProject;
 import javax.swing.*;
 import java.awt.*;
 
-public class PanelFrase extends JPanel {
+public class PanelResolver extends JPanel {
     public static final int WIDTH = 400;
     public static final int HEIGTH = 400;
 
     private String palabra,colorx;
 
-    public PanelFrase(){
+    public PanelResolver(){
         palabra = "";
         setPreferredSize(new Dimension(WIDTH,HEIGTH));
     }
@@ -34,3 +34,4 @@ public class PanelFrase extends JPanel {
     }
 
 }
+

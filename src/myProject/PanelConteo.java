@@ -3,13 +3,13 @@ package myProject;
 import javax.swing.*;
 import java.awt.*;
 
-public class PanelFrase extends JPanel {
+public class PanelConteo extends JPanel {
     public static final int WIDTH = 400;
     public static final int HEIGTH = 400;
 
-    private String palabra,colorx;
+    private String palabra;
 
-    public PanelFrase(){
+    public PanelConteo(){
         palabra = "";
         setPreferredSize(new Dimension(WIDTH,HEIGTH));
     }
@@ -29,7 +29,9 @@ public class PanelFrase extends JPanel {
 
         g.setFont(new Font(Font.DIALOG,Font.BOLD,30));
         g.setColor(Color.MAGENTA);
-        g.drawString(palabra, WIDTH/3,HEIGTH/2);
+        g.drawString("Tienes", WIDTH-250,HEIGTH-300);
+        g.drawString(palabra, WIDTH/2,HEIGTH-200);
+        g.drawString("Segundos para resolver", WIDTH/10,HEIGTH-100);
 
     }
 

@@ -13,10 +13,12 @@ import java.util.ArrayList;
  */
 public class GUI extends JFrame {
 
-    private Timer timer5;
+    private Timer timer5,timer52;
     private ModelGame modelGame;
     private Header headerProject;
     private PanelFrase panelFrase;
+    private PanelResolver panelResolver;
+    private PanelConteo panelConteo;
     private Escucha escucha;
     private JButton reset;
 
@@ -55,13 +57,20 @@ public class GUI extends JFrame {
         panelFrase.setVisible(true);
         add(panelFrase,BorderLayout.NORTH);
         this.addKeyListener(escucha);
+        setFocusable(false);
+
+        panelConteo = new PanelConteo();
+        panelConteo.setVisible(false);
+        add(panelConteo,BorderLayout.EAST);
+        this.addKeyListener(escucha);
         setFocusable(true);
 
         reset = new JButton("Reset");
         reset.addActionListener(escucha);
         this.add(reset, BorderLayout.SOUTH);
 
-        timer5 = new Timer(1000,escucha);
+        timer5 = new Timer(200,escucha);
+        timer52 = new Timer(1000, escucha);
 
     }
 
@@ -88,6 +97,7 @@ public class GUI extends JFrame {
             if(e.getKeyChar()=='r'){
                 modelGame.limpiarArrays();
                 JOptionPane.showMessageDialog(null, "junior tu apa");
+                panelFrase.setVisible(true);
             }else if(e.getKeyChar()=='o'){
                 //super.keyTyped(e);
                 modelGame.memorizar();
@@ -120,6 +130,20 @@ public class GUI extends JFrame {
 
                 if(counter<11){
                     panelFrase.pintarPalabra(palabrasm.get(counter-1)+(counter-1));
+                }else{
+                    timer5.stop();
+                    counter = 6;
+                    panelFrase.setVisible(false);
+                    panelConteo.setVisible(true);
+                    timer52.start();
+                }
+            }else if(e.getSource()==timer52){
+                counter--;
+                if(counter>=0 && counter<=5){
+                    panelConteo.pintarPalabra(""+counter);
+                }else{
+                    timer52.stop();
+                    counter = 0;
                 }
             }
         }
