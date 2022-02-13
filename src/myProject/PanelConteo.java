@@ -24,11 +24,11 @@ public class PanelConteo extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.BLUE);
+        g.setColor(new Color(52,158,126));
         g.fillRect(0,0,WIDTH,HEIGTH);
 
         g.setFont(new Font(Font.DIALOG,Font.BOLD,30));
-        g.setColor(Color.MAGENTA);
+        g.setColor(Color.BLACK);
         g.drawString("Tienes", WIDTH-250,HEIGTH-300);
         g.drawString(palabra, WIDTH/2,HEIGTH-200);
         g.drawString("Segundos para resolver", WIDTH/10,HEIGTH-100);
