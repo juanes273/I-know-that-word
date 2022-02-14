@@ -22,9 +22,10 @@ public class GUI extends JFrame {
     private PanelMenu panelMenu;
     private Escucha escucha;
     private Boolean responder,pasarPalabra;
+    private String usuario;
 
-    public static final String instrucciones = "En la primera sección se mostrarán durante 5 segundos una cantidad de palabras \n"
-            +"a memorizar, luego tendrás un tiempo de preparación de 5 segundos \n"
+    public static final String instrucciones = "En la primera sección se mostrará cada 5 segundos una palabra que deberás \n"
+            +"memorizar, luego tendrás un tiempo de preparación de 5 segundos \n"
             +"Finalmente se mostrará el doble de palabras y tendrás que decidir cuales estaban o no.\n"
             +"Deberás presionar 'B' para las correctas \n"
             +"Y 'N' para las incorrectas \n"
@@ -113,7 +114,6 @@ public class GUI extends JFrame {
 
         int palabraActual;
         private int counter;
-        String usuario;
         int score;
         String palabraPasada;
 
@@ -126,12 +126,15 @@ public class GUI extends JFrame {
                 ArrayList<String> user = modelGame.UsuariosgetUser();
                 FileWritter fileWritter = new FileWritter();
                 int nivel = modelGame.getNivelActual();
-                if(usuario==null){
+                if(usuario==null || usuario==""){
                     System.exit(0);
                 }else{
                     boolean usuarioEsta = modelGame.getUsuarioEsta();
                     if(usuarioEsta==true){
                         int indice = (user.indexOf(usuario))+1;
+                        if(nivel>=8){
+                            nivel = 8;
+                        }
                         user.set(indice,String.valueOf(nivel));
                         String usuariosFinal =null;
                         for(int i=0; i<user.size(); i++) {
@@ -141,10 +144,12 @@ public class GUI extends JFrame {
                                 usuariosFinal = usuariosFinal+"\n"+user.get(i);
                             }
                         }
-                        fileWritter.escribirTexto(usuariosFinal);
+                        fileWritter.escribirTexto(usuariosFinal.trim());
                         System.exit(0);
                     }else{
-                        System.out.println(user.get(0)+user.get(1));
+                        if(nivel>=8){
+                            nivel = 8;
+                        }
                         String usuariosFinal = null;
                         for(int i=0; i<user.size(); i++) {
                             if(usuariosFinal==null){
@@ -154,7 +159,7 @@ public class GUI extends JFrame {
                             }
                         }
                         usuariosFinal= usuariosFinal+"\n"+usuario+"\n"+nivel;
-                        fileWritter.escribirTexto(usuariosFinal);
+                        fileWritter.escribirTexto(usuariosFinal.trim());
                         System.exit(0);
                     }
                 }
@@ -180,6 +185,9 @@ public class GUI extends JFrame {
 
                 if(palabrasm.indexOf(palabrasD.get(palabraActual))!=-1){
                     modelGame.contarAciertos();
+                    panelResolver.estadoTrue();
+                }else{
+                    panelResolver.estadoFalse();
                 }
                 pasarPalabra=false;
                 System.out.println(palabrasD.get(palabraActual)+"/"+palabrasm.indexOf(palabrasD.get(palabraActual)));
@@ -193,6 +201,9 @@ public class GUI extends JFrame {
 
                 if(palabrasm.indexOf(palabra1)==-1){
                     modelGame.contarAciertos();
+                    panelResolver.estadoTrue();
+                }else{
+                    panelResolver.estadoFalse();
                 }
             }
         }
@@ -219,8 +230,10 @@ public class GUI extends JFrame {
                 timerMenu.stop();
                 ArrayList<String> palabrasm = modelGame.mostrarPalabras();
                 counter++;
-                if(counter<palabrasDeNivel+1){
-                    panelFrase.pintarPalabra(palabrasm.get(counter-1));
+                if(counter>5 && (counter-5<palabrasDeNivel+1)){
+                    panelFrase.pintarPalabra(palabrasm.get(counter-6));
+                }else if(counter<=5){
+                    panelFrase.pintarPalabra("Nivel: "+nivel);
                 }else{
                     timer5.stop();
                     int confirmacion = JOptionPane.showConfirmDialog(null,"¿Deseas continuar?",
@@ -257,7 +270,7 @@ public class GUI extends JFrame {
                     panelResolver.pintarPalabra(palabrasD.get(palabraActual), "" + counter,nivel);
                     //timer7.start();
                 }if (counter<=0){
-                    score = modelGame.getScore();
+                    panelResolver.estadoNulo();
                     counter = 8;
                     palabraActual++;
                     pasarPalabra = true;
@@ -287,7 +300,7 @@ public class GUI extends JFrame {
                                         usuariosFinal = usuariosFinal+"\n"+user.get(i);
                                     }
                                 }
-                                fileWritter.escribirTexto(usuariosFinal);
+                                fileWritter.escribirTexto(usuariosFinal.trim());
                             }else{
                                 String usuariosFinal = "";
                                 for(int i=0; i<user.size(); i++) {
@@ -297,7 +310,7 @@ public class GUI extends JFrame {
                                 }
 
                                 usuariosFinal= usuariosFinal+"\n"+usuario+"\n"+(nivel+1);
-                                fileWritter.escribirTexto(usuariosFinal);
+                                fileWritter.escribirTexto(usuariosFinal.trim());
                             }
                             System.out.println(user.get(0));
                             System.exit(0);
@@ -318,7 +331,6 @@ public class GUI extends JFrame {
                             palabraActual = 0;
                             timer5.start();
                         }else if (opcion2 == JOptionPane.NO_OPTION){
-                            JOptionPane.showMessageDialog(null,"no");
                                 if(usuarioEsta==true){
                                     FileWritter fileWritter = new FileWritter();
                                    int indice = (user.indexOf(usuario))+1;
@@ -329,7 +341,7 @@ public class GUI extends JFrame {
                                            usuariosFinal = usuariosFinal+"\n"+user.get(i);
                                        }
                                    }
-                                   fileWritter.escribirTexto(usuariosFinal);
+                                   fileWritter.escribirTexto(usuariosFinal.trim());
                                 }else{
                                     FileWritter fileWritter = new FileWritter();
                                     String usuariosFinal = "";
@@ -340,15 +352,14 @@ public class GUI extends JFrame {
                                     }
 
                                     usuariosFinal= usuariosFinal+"\n"+usuario+"\n"+nivel;
-                                    fileWritter.escribirTexto(usuariosFinal);
+                                    fileWritter.escribirTexto(usuariosFinal.trim());
                                 }
+                            System.exit(0);
                             }
-                            //System.exit(0);
                         }
                     }
                 }else if(e.getSource()==timerMenu){
                 counter++;
-                System.out.println(counter);
                 if (counter % 2==0){
                     panelMenu.cambiarParpadeoTrue();
                 }else{

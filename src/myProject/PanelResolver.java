@@ -7,7 +7,7 @@ public class PanelResolver extends JPanel {
     public static final int WIDTH = 400;
     public static final int HEIGTH = 400;
 
-    private String palabra,contador;
+    private String palabra,contador,estado;
     private int nivel;
     private Image imagen;
 
@@ -15,6 +15,7 @@ public class PanelResolver extends JPanel {
         palabra = "";
         contador ="0";
         nivel = 1 ;
+        estado = "";
         setPreferredSize(new Dimension(WIDTH,HEIGTH));
 
         imagen = new ImageIcon("/recursos/messi.jpg").getImage();
@@ -25,6 +26,18 @@ public class PanelResolver extends JPanel {
         this.contador = contadorIngresado;
         this.nivel = nivel;
         repaint();
+    }
+
+    public void estadoTrue(){
+        estado = "si";
+    }
+
+    public void estadoFalse(){
+        estado = "no";
+    }
+
+    public void estadoNulo(){
+        estado = "";
     }
 
 
@@ -43,6 +56,21 @@ public class PanelResolver extends JPanel {
         g.setFont(new Font(Font.DIALOG,Font.BOLD,20));
         g.setColor(Color.BLACK);
         g.drawString("Nivel: " + nivel, 50,50);
+
+        g.setFont(new Font(Font.DIALOG,Font.BOLD,35));
+        g.setColor(Color.BLACK);
+
+        if(estado=="si"){
+            g.drawString("✔", (WIDTH/3)-30,(HEIGTH/2));
+            repaint();
+        }else if(estado=="no"){
+            g.drawString("X", (WIDTH/3)-30,(HEIGTH/2));
+            repaint();
+        }else{
+            g.drawString("", (WIDTH/3)-30,(HEIGTH/2));
+            repaint();
+        }
+
 
         g.setFont(new Font(Font.DIALOG,Font.BOLD,15));
         g.setColor(Color.BLACK);

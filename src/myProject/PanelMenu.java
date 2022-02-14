@@ -36,7 +36,7 @@ public class PanelMenu extends JPanel {
 
         g.setFont(new Font(Font.DIALOG,Font.BOLD,20));
         g.setColor(Color.BLACK);
-        g.drawString("Presiona 'i' para ver instrucciones", 30,200);
+        g.drawString("Presiona 'i' para ver instrucciones", 40,200);
 
         g.setFont(new Font(Font.DIALOG,Font.BOLD,25));
         g.setColor(Color.BLACK);

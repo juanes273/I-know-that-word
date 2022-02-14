@@ -7,7 +7,6 @@ import java.util.Collections;
 public class ModelGame {
     private Usuarios user;
     private Diccionario frases;
-    private String alias;
     private int score,nivelActual,palabrasDeNivel,porcentajeAciertos;
     private boolean usuarioEsta;
     private ArrayList<String> palabrasVistas = new ArrayList<String>();
@@ -81,8 +80,6 @@ public class ModelGame {
     }
 
     public ArrayList<String> memorizar() {
-        Random aleatorio = new Random();
-
         for (int i = 0; i < palabrasDeNivel-1; i++) {
             String palabraAqui = frases.getFrase();
             int indice = palabrasVistas.indexOf(palabraAqui);
@@ -99,8 +96,6 @@ public class ModelGame {
 
 
     public ArrayList<String> recordar(){
-        Random aleatorio = new Random();
-
         palabrasTotalNivel.addAll(palabrasVistas);
 
         for (int i = 0; i < palabrasDeNivel-1; i++) {
@@ -112,7 +107,6 @@ public class ModelGame {
             if (indice == -1) {
                 palabrasTotalNivel.add(palabraAqui);
             } else {
-                palabraAqui = frases.getFrase();
                 i = i - 1;
             }
         }
@@ -137,12 +131,6 @@ public class ModelGame {
 
     public void avanzarNivel(){
         nivelActual++;
-    }
-
-
-
-    public ArrayList<String> getDiccionario() {
-        return diccionario;
     }
 
     public ArrayList<String> mostrarPalabras(){return palabrasVistas;}
