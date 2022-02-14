@@ -11,7 +11,7 @@ public class FileWritter {
 
     public void escribirTexto(String linea){
         try {
-            fileWriter = new FileWriter("src/myProject/files/usuarios.txt",true);
+            fileWriter = new FileWriter("src/myProject/files/usuarios.txt",false);
             output = new BufferedWriter(fileWriter);
             output.write(linea);
             output.newLine();

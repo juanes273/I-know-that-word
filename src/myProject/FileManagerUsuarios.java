@@ -3,22 +3,20 @@ package myProject;
 import java.io.*;
 import java.util.ArrayList;
 
-public class FileManager {
-    public static final String PATH = "src/myProject/files/diccionario.txt";
+public class FileManagerUsuarios {
+    public static final String PATH = "src/myProject/files/usuarios.txt";
     private FileReader fileReader;
     private BufferedReader input;
-    private FileWriter fileWriter;
-    private BufferedWriter output;
 
-    public ArrayList<String> lecturaFile(){
-        ArrayList<String> frases = new ArrayList<String>();
+    public ArrayList<String> lecturaFileUsuario(){
+        ArrayList<String> usuarios = new ArrayList<String>();
 
         try {
             fileReader = new FileReader(PATH);
             input = new BufferedReader(fileReader);
             String line = input.readLine();
             while (line != null){
-                frases.add(line);
+                usuarios.add(line);
                 line = input.readLine();
             }
         } catch (FileNotFoundException e) {
@@ -32,6 +30,6 @@ public class FileManager {
                 e.printStackTrace();
             }
         }
-        return frases;
+        return usuarios;
     }
 }

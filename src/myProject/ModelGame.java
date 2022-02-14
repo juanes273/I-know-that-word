@@ -5,24 +5,44 @@ import java.util.Random;
 import java.util.Collections;
 
 public class ModelGame {
+    private Usuarios user;
     private Diccionario frases;
     private String alias;
     private int score,nivelActual,palabrasDeNivel,porcentajeAciertos;
+    private boolean usuarioEsta;
     private ArrayList<String> palabrasVistas = new ArrayList<String>();
     private ArrayList<String> palabrasTotalNivel = new ArrayList<String>();
     private ArrayList<String> diccionario = new ArrayList<String>();
     private ArrayList<String> copiaPalabrasVistas = new ArrayList<String>();
     private ArrayList<String> diccionario1 = new ArrayList<String>();
+    private ArrayList<String> usuario = new ArrayList<String>();
 
 
     public ModelGame(){
         frases = new Diccionario();
+        user = new Usuarios();
         palabrasDeNivel = 10;
         palabrasVistas.add(frases.getFrase());
         palabrasTotalNivel.add(frases.getFrase());
         diccionario = frases.getDiccionario();
         nivelActual = 1;
         porcentajeAciertos = 14;
+        usuario = user.getUsuarios();
+    }
+
+    public void verificarUsuario(String nombre){
+
+        for (int i = 0; i < usuario.size(); i++) {
+
+            int indice = usuario.indexOf(nombre);
+
+            if (indice == -1) {
+                usuarioEsta = false;
+            }else{
+                usuarioEsta = true;
+                nivelActual = Integer.parseInt(usuario.get(indice+1));
+            }
+        }
     }
 
     public void verificarNivel(){
@@ -145,5 +165,13 @@ public class ModelGame {
 
     public int getPorcentajeAciertos() {
         return porcentajeAciertos;
+    }
+
+    public boolean getUsuarioEsta() {
+        return usuarioEsta;
+    }
+
+    public ArrayList<String> UsuariosgetUser() {
+        return usuario;
     }
 }

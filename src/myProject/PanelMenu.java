@@ -7,19 +7,22 @@ public class PanelMenu extends JPanel {
     public static final int WIDTH = 400;
     public static final int HEIGTH = 400;
     private String palabra,titulo;
+    private boolean parpadeo;
 
     public PanelMenu(){
-        palabra = "";
+        palabra = "Presiona Enter para registrarte";
         titulo = "¡I know that word!";
+        parpadeo = true;
         setPreferredSize(new Dimension(WIDTH,HEIGTH));
     }
 
-    public void pintarPalabra(String palabraIngresada){
-        this.palabra = palabraIngresada;
-
-        repaint();
+    public void cambiarParpadeoTrue(){
+        parpadeo= true;
     }
 
+    public void cambiarParpadeoFalse(){
+        parpadeo = false;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -31,11 +34,20 @@ public class PanelMenu extends JPanel {
         g.setColor(Color.BLACK);
         g.drawString(titulo, WIDTH/5,40);
 
-        g.setFont(new Font(Font.DIALOG,Font.BOLD,30));
-        g.setColor(Color.MAGENTA);
-        g.drawString(palabra, WIDTH/3,HEIGTH/2);
+        g.setFont(new Font(Font.DIALOG,Font.BOLD,20));
+        g.setColor(Color.BLACK);
+        g.drawString("Presiona 'i' para ver instrucciones", 30,200);
 
+        g.setFont(new Font(Font.DIALOG,Font.BOLD,25));
+        g.setColor(Color.BLACK);
 
+        if(parpadeo==true){
+            g.drawString(palabra, 20,HEIGTH-50);
+            repaint();
+        }else{
+            g.drawString("", 0,HEIGTH);
+            repaint();
+        }
     }
 
 }
