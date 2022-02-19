@@ -8,7 +8,7 @@ import java.util.Collections;
  * Class used to do most of the functions in the game
  *
  * @version v.1.0.0 date:18/02/2022
- * @autor Juan Esteban Brand Tovar  brand.juan@correounivalle.edu.co / Jose Miguel Becerra Casierra
+ * @autor Juan Esteban Brand Tovar  brand.juan@correounivalle.edu.co / Jose Miguel Becerra Casierra jose.becerra@correounivalle.edu.co
  */
 
 public class ModelGame {

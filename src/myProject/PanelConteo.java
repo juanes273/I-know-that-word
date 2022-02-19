@@ -7,7 +7,7 @@ import java.awt.*;
  * Class that shows the time you have before you start guessing
  *
  * @version v.1.0.0 date:18/02/2022
- * @autor Juan Esteban Brand Tovar  brand.juan@correounivalle.edu.co / Jose Miguel Becerra Casierra
+ * @autor Juan Esteban Brand Tovar  brand.juan@correounivalle.edu.co / Jose Miguel Becerra Casierra jose.becerra@correounivalle.edu.co
  */
 
 public class PanelConteo extends JPanel {

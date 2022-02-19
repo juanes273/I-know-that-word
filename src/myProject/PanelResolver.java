@@ -7,7 +7,7 @@ import java.awt.*;
  * Class that shows the part in where you have to select words
  *
  * @version v.1.0.0 date:18/02/2022
- * @autor Juan Esteban Brand Tovar  brand.juan@correounivalle.edu.co / Jose Miguel Becerra Casierra
+ * @autor Juan Esteban Brand Tovar  brand.juan@correounivalle.edu.co / Jose Miguel Becerra Casierra jose.becerra@correounivalle.edu.co
  */
 
 public class PanelResolver extends JPanel {
