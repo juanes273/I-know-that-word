@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class GUI extends JFrame {
 
-    private Timer timerMostrar, timerPreparacion, timerResolver, timerMenu;
+    private Timer timerMostrar, timerPreparacion, timerResolver, timerMenu, timerNivel;
     private ModelGame modelGame;
     private Header headerProject;
     private PanelFrase panelFrase;
@@ -87,10 +87,11 @@ public class GUI extends JFrame {
         this.addKeyListener(escucha);
         setFocusable(true);
 
-        timerMostrar = new Timer(500, escucha);
-        timerPreparacion = new Timer(500, escucha);
-        timerResolver = new Timer(50, escucha);
-        timerMenu = new Timer(600, escucha);
+        timerMostrar = new Timer(5000, escucha);
+        timerPreparacion = new Timer(1000, escucha);
+        timerResolver = new Timer(1000, escucha);
+        timerMenu = new Timer(500, escucha);
+        timerNivel = new Timer(1000, escucha);
         timerMenu.start();
 
         responder = false;
@@ -176,7 +177,7 @@ public class GUI extends JFrame {
                 modelGame.memorizar();
                 panelConteo.addKeyListener(escucha);
                 panelResolver.addKeyListener(escucha);
-                timerMostrar.start();
+                timerNivel.start();
                 panelMenu.setVisible(false);
                 panelFrase.setVisible(true);
             }
@@ -228,14 +229,22 @@ public class GUI extends JFrame {
             int nivel = modelGame.getNivelActual();
             int aciertos = modelGame.getPorcentajeAciertos();
 
-            if (e.getSource() == timerMostrar) {
+            if (e.getSource() == timerNivel) {
                 timerMenu.stop();
+                counter++;
+                if (counter < 2) {
+                    panelFrase.pintarPalabra("Nivel: " + nivel);
+                } else {
+                    timerMostrar.start();
+                    timerNivel.stop();
+                    counter = 0;
+                }
+            }
+            if (e.getSource() == timerMostrar) {
                 ArrayList<String> palabrasVistas = modelGame.getPalabrasVistas();
                 counter++;
-                if (counter > 5 && (counter - 5 < palabrasDeNivel + 1)) {
-                    panelFrase.pintarPalabra(palabrasVistas.get(counter - 6));
-                } else if (counter <= 5) {
-                    panelFrase.pintarPalabra("Nivel: " + nivel);
+                if (counter < palabrasDeNivel + 1) {
+                    panelFrase.pintarPalabra(palabrasVistas.get(counter - 1));
                 } else {
                     timerMostrar.stop();
                     int confirmacion = JOptionPane.showConfirmDialog(null, "¿Deseas continuar?",
