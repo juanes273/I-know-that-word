@@ -2,6 +2,13 @@ package myProject;
 
 import java.io.*;
 
+/**
+ * Class used to write a 'txt', in this case is used to save the users
+ *
+ * @version v.1.0.0 date:18/02/2022
+ * @autor Juan Esteban Brand Tovar  brand.juan@correounivalle.edu.co / Jose Miguel Becerra Casierra
+ */
+
 public class FileWritter {
     private FileReader fileReader;
     private BufferedReader input;
@@ -9,15 +16,18 @@ public class FileWritter {
     private BufferedWriter output;
 
 
-    public void escribirTexto(String linea){
+    /**
+     * Function that write a 'txt' (users)
+     */
+    public void escribirTexto(String linea) {
         try {
-            fileWriter = new FileWriter("src/myProject/files/usuarios.txt",false);
+            fileWriter = new FileWriter("src/myProject/files/usuarios.txt", false);
             output = new BufferedWriter(fileWriter);
             output.write(linea);
             output.newLine();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             try {
                 output.close();
             } catch (IOException e) {

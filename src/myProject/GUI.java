@@ -7,13 +7,14 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
- * This class is used for ...
- * @autor Paola-J Rodriguez-C paola.rodriguez@correounivalle.edu.co
- * @version v.1.0.0 date:21/11/2021
+ * Main process of the java program
+ *
+ * @version v.1.0.0 date:18/02/2022
+ * @autor Juan Esteban Brand Tovar  brand.juan@correounivalle.edu.co / Jose Miguel Becerra Casierra
  */
 public class GUI extends JFrame {
 
-    private Timer timer5,timer52,timer7,timerMenu;
+    private Timer timerMostrar, timerPreparacion, timerResolver, timerMenu;
     private ModelGame modelGame;
     private Header headerProject;
     private PanelFrase panelFrase;
@@ -21,15 +22,15 @@ public class GUI extends JFrame {
     private PanelConteo panelConteo;
     private PanelMenu panelMenu;
     private Escucha escucha;
-    private Boolean responder,pasarPalabra;
+    private Boolean responder, pasarPalabra;
     private String usuario;
 
-    public static final String instrucciones = "En la primera sección se mostrará cada 5 segundos una palabra que deberás \n"
-            +"memorizar, luego tendrás un tiempo de preparación de 5 segundos \n"
-            +"Finalmente se mostrará el doble de palabras y tendrás que decidir cuales estaban o no.\n"
-            +"Deberás presionar 'B' para las correctas \n"
-            +"Y 'N' para las incorrectas \n"
-            +"Presiona 'X' en cualquier momento para cerrar el juego";
+    public static final String instrucciones = "-En la primera sección se mostrará cada 5 segundos una palabra que deberás \n"
+            + " memorizar, luego tendrás un tiempo de preparación de 5 segundos \n"
+            + " Finalmente se mostrará el doble de palabras y tendrás que decidir cuales estaban o no.\n"
+            + "-Deberás presionar 'B' para las correctas \n"
+            + " Y 'N' para las incorrectas \n"
+            + "-Presiona 'X' en cualquier momento para cerrar el juego";
 
     /**
      * Constructor of GUI class
@@ -60,36 +61,36 @@ public class GUI extends JFrame {
         escucha = new Escucha();
         //Set up JComponents
         headerProject = new Header("Oprime una letra del teclado  para jugar", Color.BLACK);
-        this.add(headerProject,BorderLayout.NORTH); //Change this line if you change JFrame Container's Layout
+        this.add(headerProject, BorderLayout.NORTH); //Change this line if you change JFrame Container's Layout
 
         panelFrase = new PanelFrase();
         panelFrase.setVisible(false);
-        add(panelFrase,BorderLayout.CENTER);
+        add(panelFrase, BorderLayout.CENTER);
         //this.addKeyListener(escucha);
         setFocusable(true);
 
         panelConteo = new PanelConteo();
         panelConteo.setVisible(false);
-        add(panelConteo,BorderLayout.EAST);
+        add(panelConteo, BorderLayout.EAST);
         //this.addKeyListener(escucha);
         setFocusable(true);
 
         panelResolver = new PanelResolver();
         panelResolver.setVisible(false);
-        add(panelResolver,BorderLayout.WEST);
+        add(panelResolver, BorderLayout.WEST);
         //this.addKeyListener(escucha);
         setFocusable(true);
 
         panelMenu = new PanelMenu();
         panelMenu.setVisible(true);
-        add(panelMenu,BorderLayout.NORTH);
+        add(panelMenu, BorderLayout.NORTH);
         this.addKeyListener(escucha);
         setFocusable(true);
 
-        timer5 = new Timer(500,escucha);
-        timer52 = new Timer(500, escucha);
-        timer7 = new Timer(50,escucha);
-        timerMenu = new Timer(600,escucha);
+        timerMostrar = new Timer(500, escucha);
+        timerPreparacion = new Timer(500, escucha);
+        timerResolver = new Timer(50, escucha);
+        timerMenu = new Timer(600, escucha);
         timerMenu.start();
 
         responder = false;
@@ -98,10 +99,11 @@ public class GUI extends JFrame {
 
     /**
      * Main process of the Java program
+     *
      * @param args Object used in order to send input data from command line when
      *             the program is execute by console.
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             GUI miProjectGUI = new GUI();
         });
@@ -120,53 +122,52 @@ public class GUI extends JFrame {
         @Override
         public void keyTyped(KeyEvent e) {
             palabraPasada = "";
-            if(e.getKeyChar()=='r'){
-                panelFrase.setVisible(true);
-            }if(e.getKeyChar()=='x'){
+            if (e.getKeyChar() == 'x') {
                 ArrayList<String> user = modelGame.UsuariosgetUser();
                 FileWritter fileWritter = new FileWritter();
                 int nivel = modelGame.getNivelActual();
-                if(usuario==null || usuario==""){
+                if (usuario == null || usuario == "") {
                     System.exit(0);
-                }else{
+                } else {
                     boolean usuarioEsta = modelGame.getUsuarioEsta();
-                    if(usuarioEsta==true){
-                        int indice = (user.indexOf(usuario))+1;
-                        if(nivel>=8){
+                    if (usuarioEsta == true) {
+                        int indice = (user.indexOf(usuario)) + 1;
+                        if (nivel >= 8) {
                             nivel = 8;
                         }
-                        user.set(indice,String.valueOf(nivel));
-                        String usuariosFinal =null;
-                        for(int i=0; i<user.size(); i++) {
-                            if(usuariosFinal==null){
+                        user.set(indice, String.valueOf(nivel));
+                        String usuariosFinal = null;
+                        for (int i = 0; i < user.size(); i++) {
+                            if (usuariosFinal == null) {
                                 usuariosFinal = user.get(i);
-                            }else if (user.get(i)!=null){
-                                usuariosFinal = usuariosFinal+"\n"+user.get(i);
+                            } else if (user.get(i) != null) {
+                                usuariosFinal = usuariosFinal + "\n" + user.get(i);
                             }
                         }
                         fileWritter.escribirTexto(usuariosFinal.trim());
                         System.exit(0);
-                    }else{
-                        if(nivel>=8){
+                    } else {
+                        if (nivel >= 8) {
                             nivel = 8;
                         }
                         String usuariosFinal = null;
-                        for(int i=0; i<user.size(); i++) {
-                            if(usuariosFinal==null){
+                        for (int i = 0; i < user.size(); i++) {
+                            if (usuariosFinal == null) {
                                 usuariosFinal = user.get(i);
-                            }else if (user.get(i)!=null){
-                                usuariosFinal = usuariosFinal+"\n"+user.get(i);
+                            } else if (user.get(i) != null) {
+                                usuariosFinal = usuariosFinal + "\n" + user.get(i);
                             }
                         }
-                        usuariosFinal= usuariosFinal+"\n"+usuario+"\n"+nivel;
+                        usuariosFinal = usuariosFinal + "\n" + usuario + "\n" + nivel;
                         fileWritter.escribirTexto(usuariosFinal.trim());
                         System.exit(0);
                     }
                 }
-            }if(e.getKeyChar()=='i'){
-                JOptionPane.showMessageDialog(null,instrucciones);
-            }if(e.getKeyChar()=='t'){
-            }if(e.getKeyChar()==KeyEvent.VK_ENTER){
+            }
+            if (e.getKeyChar() == 'i') {
+                JOptionPane.showMessageDialog(null, instrucciones);
+            }
+            if (e.getKeyChar() == KeyEvent.VK_ENTER) {
                 timerMenu.stop();
                 counter = 0;
                 usuario = JOptionPane.showInputDialog("Ingrese su usuario");
@@ -175,34 +176,35 @@ public class GUI extends JFrame {
                 modelGame.memorizar();
                 panelConteo.addKeyListener(escucha);
                 panelResolver.addKeyListener(escucha);
-                timer5.start();
+                timerMostrar.start();
                 panelMenu.setVisible(false);
                 panelFrase.setVisible(true);
-            }if(e.getKeyChar()=='b' && responder==true && pasarPalabra==true){
-                ArrayList<String> palabrasm = modelGame.mostrarPalabras();
-                ArrayList<String> palabrasD = modelGame.getPalabrasTotalNivel();
+            }
+            if (e.getKeyChar() == 'b' && responder == true && pasarPalabra == true) {
+                ArrayList<String> palabrasVistas = modelGame.getPalabrasVistas();
+                ArrayList<String> palabrasTotal = modelGame.getPalabrasTotalNivel();
 
 
-                if(palabrasm.indexOf(palabrasD.get(palabraActual))!=-1){
+                if (palabrasVistas.indexOf(palabrasTotal.get(palabraActual)) != -1) {
                     modelGame.contarAciertos();
                     panelResolver.estadoTrue();
-                }else{
+                } else {
                     panelResolver.estadoFalse();
                 }
-                pasarPalabra=false;
-                System.out.println(palabrasD.get(palabraActual)+"/"+palabrasm.indexOf(palabrasD.get(palabraActual)));
+                pasarPalabra = false;
 
 
-            }if(e.getKeyChar()=='n' && responder==true){
+            }
+            if (e.getKeyChar() == 'n' && responder == true) {
                 String palabra1;
-                ArrayList<String> palabrasm = modelGame.mostrarPalabras();
-                ArrayList<String> palabrasD = modelGame.getPalabrasTotalNivel();
-                palabra1 = palabrasD.get(palabraActual);
+                ArrayList<String> palabrasVistas = modelGame.getPalabrasVistas();
+                ArrayList<String> palabrasTotal = modelGame.getPalabrasTotalNivel();
+                palabra1 = palabrasTotal.get(palabraActual);
 
-                if(palabrasm.indexOf(palabra1)==-1){
+                if (palabrasVistas.indexOf(palabra1) == -1) {
                     modelGame.contarAciertos();
                     panelResolver.estadoTrue();
-                }else{
+                } else {
                     panelResolver.estadoFalse();
                 }
             }
@@ -226,102 +228,99 @@ public class GUI extends JFrame {
             int nivel = modelGame.getNivelActual();
             int aciertos = modelGame.getPorcentajeAciertos();
 
-            if(e.getSource()==timer5){
+            if (e.getSource() == timerMostrar) {
                 timerMenu.stop();
-                ArrayList<String> palabrasm = modelGame.mostrarPalabras();
+                ArrayList<String> palabrasVistas = modelGame.getPalabrasVistas();
                 counter++;
-                if(counter>5 && (counter-5<palabrasDeNivel+1)){
-                    panelFrase.pintarPalabra(palabrasm.get(counter-6));
-                }else if(counter<=5){
-                    panelFrase.pintarPalabra("Nivel: "+nivel);
-                }else{
-                    timer5.stop();
-                    int confirmacion = JOptionPane.showConfirmDialog(null,"¿Deseas continuar?",
-                            "Continuar",JOptionPane.YES_NO_OPTION);
-                    if(confirmacion == JOptionPane.YES_OPTION){
+                if (counter > 5 && (counter - 5 < palabrasDeNivel + 1)) {
+                    panelFrase.pintarPalabra(palabrasVistas.get(counter - 6));
+                } else if (counter <= 5) {
+                    panelFrase.pintarPalabra("Nivel: " + nivel);
+                } else {
+                    timerMostrar.stop();
+                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Deseas continuar?",
+                            "Continuar", JOptionPane.YES_NO_OPTION);
+                    if (confirmacion == JOptionPane.YES_OPTION) {
                         counter = 6;
                         panelFrase.setVisible(false);
                         panelConteo.setVisible(true);
-                        timer52.start();
-                    }else if(confirmacion==JOptionPane.NO_OPTION){
+                        timerPreparacion.start();
+                    } else if (confirmacion == JOptionPane.NO_OPTION) {
                         System.exit(0);
                     }
 
                 }
-            }else if(e.getSource()==timer52){
+            } else if (e.getSource() == timerPreparacion) {
                 counter--;
-                if(counter>=0 && counter<=5){
-                    panelConteo.pintarPalabra(""+counter);
-                }else{
-                    timer52.stop();
+                if (counter >= 0 && counter <= 5) {
+                    panelConteo.pintarPalabra("" + counter);
+                } else {
+                    timerPreparacion.stop();
                     counter = 8;
-                    timer7.start();
+                    timerResolver.start();
                     panelConteo.setVisible(false);
                     panelResolver.setVisible(true);
                     modelGame.recordar();
                 }
-            }else if(e.getSource()==timer7) {
-                responder= true;
+            } else if (e.getSource() == timerResolver) {
+                responder = true;
                 counter--;
-                System.out.println("score: " + counter + "\n" + "palabra actual: " + palabraActual);
-                ArrayList<String> palabrasD = modelGame.getPalabrasTotalNivel();
-                System.out.println(palabrasD.size());
-                if (counter <= 8 && counter>=0) {
-                    panelResolver.pintarPalabra(palabrasD.get(palabraActual), "" + counter,nivel);
-                    //timer7.start();
-                }if (counter<=0){
+                ArrayList<String> palabrasTotal = modelGame.getPalabrasTotalNivel();
+                if (counter <= 8 && counter >= 0) {
+                    panelResolver.pintarPalabra(palabrasTotal.get(palabraActual), "" + counter, nivel);
+                    //timerResolver.start();
+                }
+                if (counter <= 0) {
                     panelResolver.estadoNulo();
                     counter = 8;
                     palabraActual++;
                     pasarPalabra = true;
-                }if(palabraActual>(palabrasDeNivel*2)-1){
+                }
+                if (palabraActual > (palabrasDeNivel * 2) - 1) {
                     score = modelGame.getScore();
-                    timer7.stop();
+                    timerResolver.stop();
                     counter = 8;
-                    if(score>=aciertos){
-                        int opcion = JOptionPane.showConfirmDialog(panelFrase,"¡Has completado el nivel!"
-                                +"\n"+"¿Deseas continuar?","Ganaste",JOptionPane.YES_OPTION);
-                    if (opcion == JOptionPane.YES_OPTION){
-                        JOptionPane.showMessageDialog(null, "si");
-                        panelResolver.setVisible(false);
-                        panelFrase.setVisible(true);
-                        modelGame.avanzarNivel();
-                        timer5.start();
-                    }else if (opcion == JOptionPane.NO_OPTION){
-                        JOptionPane.showMessageDialog(null,"no");
+                    if (score >= aciertos) {
+                        int opcion = JOptionPane.showConfirmDialog(panelFrase, "¡Has completado el nivel!"
+                                + "\n" + "¿Deseas continuar?", "Ganaste", JOptionPane.YES_OPTION);
+                        if (opcion == JOptionPane.YES_OPTION) {
+                            JOptionPane.showMessageDialog(null, "si");
+                            panelResolver.setVisible(false);
+                            panelFrase.setVisible(true);
+                            modelGame.avanzarNivel();
+                            timerMostrar.start();
+                        } else if (opcion == JOptionPane.NO_OPTION) {
+                            JOptionPane.showMessageDialog(null, "no");
                             FileWritter fileWritter = new FileWritter();
-                            if(usuarioEsta==true){
-                                int indice = (user.indexOf(usuario))+1;
-                                user.set(indice,String.valueOf(nivel+1));
-                                System.out.println(user.get(0)+user.get(1));
+                            if (usuarioEsta == true) {
+                                int indice = (user.indexOf(usuario)) + 1;
+                                user.set(indice, String.valueOf(nivel + 1));
                                 String usuariosFinal = "";
-                                for(int i=0; i<user.size(); i++) {
-                                    if(user.get(i)!=""){
-                                        usuariosFinal = usuariosFinal+"\n"+user.get(i);
+                                for (int i = 0; i < user.size(); i++) {
+                                    if (user.get(i) != "") {
+                                        usuariosFinal = usuariosFinal + "\n" + user.get(i);
                                     }
                                 }
                                 fileWritter.escribirTexto(usuariosFinal.trim());
-                            }else{
+                            } else {
                                 String usuariosFinal = "";
-                                for(int i=0; i<user.size(); i++) {
-                                    if(user.get(i)!=""){
-                                        usuariosFinal = usuariosFinal+"\n"+user.get(i);
+                                for (int i = 0; i < user.size(); i++) {
+                                    if (user.get(i) != "") {
+                                        usuariosFinal = usuariosFinal + "\n" + user.get(i);
                                     }
                                 }
 
-                                usuariosFinal= usuariosFinal+"\n"+usuario+"\n"+(nivel+1);
+                                usuariosFinal = usuariosFinal + "\n" + usuario + "\n" + (nivel + 1);
                                 fileWritter.escribirTexto(usuariosFinal.trim());
                             }
-                            System.out.println(user.get(0));
                             System.exit(0);
                         }
-                    }else{
-                        int opcion2 = JOptionPane.showConfirmDialog(panelFrase,"Has perdido :c"
-                                +"\n"+"¿Deseas intentarlo de nuevo?","Perdiste",JOptionPane.YES_OPTION);
-                        if (opcion2 == JOptionPane.YES_OPTION){
+                    } else {
+                        int opcion2 = JOptionPane.showConfirmDialog(panelFrase, "Has perdido :c"
+                                + "\n" + "¿Deseas intentarlo de nuevo?", "Perdiste", JOptionPane.YES_OPTION);
+                        if (opcion2 == JOptionPane.YES_OPTION) {
                             panelResolver.setVisible(false);
                             modelGame.limpiarArrays();
-                            counter = 0;
                             modelGame.verificarNivel();
                             modelGame.memorizar();
                             panelConteo.addKeyListener(escucha);
@@ -329,43 +328,44 @@ public class GUI extends JFrame {
                             panelMenu.setVisible(false);
                             panelFrase.setVisible(true);
                             palabraActual = 0;
-                            timer5.start();
-                        }else if (opcion2 == JOptionPane.NO_OPTION){
-                                if(usuarioEsta==true){
-                                    FileWritter fileWritter = new FileWritter();
-                                   int indice = (user.indexOf(usuario))+1;
-                                   user.set(indice,String.valueOf(nivel));
-                                   String usuariosFinal = "";
-                                   for(int i=0; i<user.size(); i++) {
-                                       if(user.get(i)!=""){
-                                           usuariosFinal = usuariosFinal+"\n"+user.get(i);
-                                       }
-                                   }
-                                   fileWritter.escribirTexto(usuariosFinal.trim());
-                                }else{
-                                    FileWritter fileWritter = new FileWritter();
-                                    String usuariosFinal = "";
-                                    for(int i=0; i<user.size(); i++) {
-                                        if(user.get(i)!=""){
-                                            usuariosFinal = usuariosFinal+"\n"+user.get(i);
-                                        }
+                            counter = 0;
+                            timerMostrar.start();
+                        } else if (opcion2 == JOptionPane.NO_OPTION) {
+                            if (usuarioEsta == true) {
+                                FileWritter fileWritter = new FileWritter();
+                                int indice = (user.indexOf(usuario)) + 1;
+                                user.set(indice, String.valueOf(nivel));
+                                String usuariosFinal = "";
+                                for (int i = 0; i < user.size(); i++) {
+                                    if (user.get(i) != "") {
+                                        usuariosFinal = usuariosFinal + "\n" + user.get(i);
                                     }
-
-                                    usuariosFinal= usuariosFinal+"\n"+usuario+"\n"+nivel;
-                                    fileWritter.escribirTexto(usuariosFinal.trim());
                                 }
-                            System.exit(0);
+                                fileWritter.escribirTexto(usuariosFinal.trim());
+                            } else {
+                                FileWritter fileWritter = new FileWritter();
+                                String usuariosFinal = "";
+                                for (int i = 0; i < user.size(); i++) {
+                                    if (user.get(i) != "") {
+                                        usuariosFinal = usuariosFinal + "\n" + user.get(i);
+                                    }
+                                }
+
+                                usuariosFinal = usuariosFinal + "\n" + usuario + "\n" + nivel;
+                                fileWritter.escribirTexto(usuariosFinal.trim());
                             }
+                            System.exit(0);
                         }
                     }
-                }else if(e.getSource()==timerMenu){
+                }
+            } else if (e.getSource() == timerMenu) {
                 counter++;
-                if (counter % 2==0){
+                if (counter % 2 == 0) {
                     panelMenu.cambiarParpadeoTrue();
-                }else{
+                } else {
                     panelMenu.cambiarParpadeoFalse();
                 }
             }
-            }
         }
     }
+}
